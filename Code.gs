@@ -11,6 +11,15 @@ function acceptData(formData){
   const ss = SpreadsheetApp.getActiveSpreadsheet()
   const ws = ss.getSheetByName("Sheet1")
 
-  ws.appendRow([formData.serialNumber,formData.partNumber,formData.customer,formData.status,formData.notes,formData.checkboxtbc])
+  ws.appendRow([
+                formData.serialNumber,
+                formData.partNumber,
+                formData.customer,
+                formData.status,
+                formData.notes,
+                formData.checkboxtbc
+              ])
 
 }
+
+
