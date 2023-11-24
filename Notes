@@ -1,0 +1,13 @@
+In the code file, change the following:
+const ws = ss.getSheetByName("Sheet1") //Sheet Name
+
+
+In the Index File, change the following:
+
+<div class="row">
+<div class="cell-6">
+<div class="form-group">
+<label>Serial Number:</label>  //LABEL NAME
+<input name="serialNumber" type="text" placeholder="Serial Number" class="metro-input"/>  //INPUT NAME + PLACEHOLDER NAME
+</div>
+</div>
