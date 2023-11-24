@@ -23,13 +23,13 @@
     <h1>Console Point</h1>
       <div class="grid">
 
-        <form id="console-Point">
+        <form id="console-Point" data-role="validator" action="javascript:" data-on-submit="addRecord()">
 
           <div class="row">
               <div class="cell-6">
                   <div class="form-group">
                       <label>Serial Number:</label>
-                      <input name="serialNumber" type="text" placeholder="Serial Number" class="metro-input"/>
+                      <input name="serialNumber" type="text" placeholder="Serial Number" class="metro-input"  data-validate="required minlength=5"/>
                   </div>
               </div>
 
@@ -96,9 +96,16 @@
               </div>
             </div>
           </div>
+        </form>   
+
+        <div class="row d-none" id="success-message">
+            <div class="cell-12">    
+              Console Point Database Updated ! <button id="back-to-form">Submit Another Item</button>
+              </div>
+            </div>
+          </div>
 
 
-        </form>       
       </div>
 </div>
 
@@ -107,16 +114,69 @@
 
     <script>  
     const consolePoint = document.getElementById("console-Point")
+    const successMessage = document.getElementById("success-message")
+    const backToForm = document.getElementById("back-to-form")
+    
+    
+
     consolePoint.addEventListener("submit",submitData)
 
     function submitData(e){
       e.preventDefault()
       console.log("Form Submitted")
       console.log(this)
-      google.script.run.acceptData(this)
+      google.script.run.withSuccessHandler(() => {
+       
+        //clears the form
+        consolePoint.reset() 
+        
+        //Below code resets the dropdown boxes
+        const selectElements = consolePoint.querySelectorAll("select")
+         selectElements.forEach(element => {
+          const tempSelect = Metro.getPlugin(element,"select")
+          tempSelect.val("")
+        })
+
+        consolePoint.classList.add("d-none")
+        successMessage.classList.remove("d-none")
+        
+      }).withFailureHandler(() => {
+
+      }).acceptData(this)
     }
+
+
+    function addRecord(){
+       google.script.run.withSuccessHandler(() => {
+       
+        //clears the form
+        consolePoint.reset() 
+        
+        //Below code resets the dropdown boxes
+        const selectElements = consolePoint.querySelectorAll("select")
+         selectElements.forEach(element => {
+          const tempSelect = Metro.getPlugin(element,"select")
+          tempSelect.val("")
+        })
+
+        consolePoint.classList.add("d-none")
+        successMessage.classList.remove("d-none")
+        
+      }).withFailureHandler(() => {
+
+      }).acceptData(this)
+    }
+  
+
+    backToForm.addEventListener("click",() => {
+        consolePoint.classList.remove("d-none")
+        successMessage.classList.add("d-none")
+    })
 
     </script>
 
   </body>
 </html>
+
+
+ <!-- To Validate URL: <input type="text" data-validate="url">  -->
