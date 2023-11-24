@@ -7,11 +7,10 @@ function doGet() {
 
 function acceptData(formData){
   console.log(formData)
-  formData.serialNumber
-
+ 
   const ss = SpreadsheetApp.getActiveSpreadsheet()
   const ws = ss.getSheetByName("Sheet1")
 
-  ws.appendRow([formData.serialNumber])
+  ws.appendRow([formData.serialNumber,formData.partNumber,formData.customer,formData.status,formData.notes,formData.checkboxtbc])
 
 }
