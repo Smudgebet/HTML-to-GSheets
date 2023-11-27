@@ -1,3 +1,6 @@
+//working 27th Nov 2023
+// next step to populate html dropdown with gsheet values
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,32 +26,36 @@
     <h1>Console Point</h1>
       <div class="grid">
 
-        <form id="console-Point" data-role="validator" action="javascript:" data-on-submit="addRecord()">
+        <form id="console-Point" data-role="validator" action="javascript:" data-on-submit="addRecord">
 
           <div class="row">
-              <div class="cell-6">
+              <div class="cell-6 p-1">
                   <div class="form-group">
                       <label>Serial Number:</label>
-                      <input name="serialNumber" type="text" placeholder="Serial Number" class="metro-input"  data-validate="required minlength=5"/>
+                      <input name="serialNumber" type="text" placeholder="Serial Number" class="metro-input" data-validate="required minlength=5"/>
                   </div>
               </div>
 
 
 
-              <div class="cell-6">
+              <div class="cell-6 p-1">
                   <div class="form-group">
                     <label>Part Number:</label>
-                    <input name="partNumber" type="text" placeholder="Part Number" class="metro-input"/>
+              <select data-role="select" name="partNumber" data-validate="required not=''">
+                 <option disabled selected> </option>
+                  <option>Part 1</option>
+                  <option>Part 2</option>
+                  <option>Part 3</option>
+              </select>
                 </div>
               </div>
           </div>
-
-
-
+          
+          
           <div class="row">
-            <div class="cell-6">
+            <div class="cell-6 p-1">
               <label>Customer:</label>
-              <select data-role="select" name="customer">
+              <select data-role="select" name="customer" data-validate="required not=''">
                  <option disabled selected> </option>
                   <option>Thales</option>
                   <option>Telent</option>
@@ -58,9 +65,9 @@
        
 
 
-           <div class="cell-6">
+           <div class="cell-6 p-1">
               <label>Status:</label>
-              <select data-role="select"  name="status">
+              <select data-role="select"  name="status" data-validate="required not=''">
                  <option disabled selected> </option>
                   <option>Open</option>
                   <option>Closed</option>
@@ -71,7 +78,7 @@
 
 
           <div class="row">
-            <div class="cell-12">
+            <div class="cell-12 p-1">
               <label>Notes:</label>
                 <textarea data-role="textarea" data-auto-size="true" data-max-height="200"  name="notes"></textarea>
             </div>
@@ -80,7 +87,7 @@
 
 
           <div class="row">
-            <div class="cell-12">         
+            <div class="cell-12 p-1">         
               <div class="form-group">
                 <input type="checkbox" data-role="checkbox" data-caption="Remember me"  name="checkboxtbc">
               </div>
@@ -90,7 +97,7 @@
 
 
           <div class="row">
-            <div class="cell-12">    
+            <div class="cell-12 p-1">    
               <div class="form-group">
                     <button class="button success">Submit</button>
               </div>
@@ -99,13 +106,25 @@
         </form>   
 
         <div class="row d-none" id="success-message">
+            <div class="cell-12 p-1">    
+              <strong> Console Point Database Updated ! </strong>
+              <br>
+              <button class="button alert" id="back-to-form" >Submit Another Item</button>
+              </div>
+            </div>
+          </div>
+
+           <div class="row d-none" id="progress">
             <div class="cell-12">    
-              Console Point Database Updated ! <button id="back-to-form">Submit Another Item</button>
+              <div data-role="progress" data-type="line"></div>
+              <div data-role="progress" data-type="line" data-small="true"></div>
+
               </div>
             </div>
           </div>
 
 
+        
       </div>
 </div>
 
@@ -116,6 +135,7 @@
     const consolePoint = document.getElementById("console-Point")
     const successMessage = document.getElementById("success-message")
     const backToForm = document.getElementById("back-to-form")
+    const progress = document.getElementById("progress")
     
     
 
@@ -125,28 +145,13 @@
       e.preventDefault()
       console.log("Form Submitted")
       console.log(this)
-      google.script.run.withSuccessHandler(() => {
-       
-        //clears the form
-        consolePoint.reset() 
-        
-        //Below code resets the dropdown boxes
-        const selectElements = consolePoint.querySelectorAll("select")
-         selectElements.forEach(element => {
-          const tempSelect = Metro.getPlugin(element,"select")
-          tempSelect.val("")
-        })
-
-        consolePoint.classList.add("d-none")
-        successMessage.classList.remove("d-none")
-        
-      }).withFailureHandler(() => {
-
-      }).acceptData(this)
     }
 
 
     function addRecord(){
+        progress.classList.remove("d-none")
+        consolePoint.classList.add("d-none")
+
        google.script.run.withSuccessHandler(() => {
        
         //clears the form
@@ -159,8 +164,9 @@
           tempSelect.val("")
         })
 
-        consolePoint.classList.add("d-none")
+ 
         successMessage.classList.remove("d-none")
+        progress.classList.add("d-none")
         
       }).withFailureHandler(() => {
 
