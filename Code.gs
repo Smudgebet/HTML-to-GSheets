@@ -1,3 +1,6 @@
+// 27th November 2023
+// Working - Next step is to populate dropdown html element with google sheet values
+
 function doGet() {
   const htmlService = HtmlService.createTemplateFromFile("index")
   const html = htmlService.evaluate().addMetaTag("viewport","width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
@@ -21,5 +24,4 @@ function acceptData(formData){
               ])
 
 }
-
 
